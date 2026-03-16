@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>AutoSender Pro · royal elegance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ----- royal blue & white theme, decorative cards, centered content ----- */
+        :root {
+            --royal: #4169E1;
+            --royal-dark: #1e3f9e;
+            --royal-soft: #e8eeff;
+            --royal-glow: rgba(65, 105, 225, 0.2);
+            --card-gradient: linear-gradient(145deg, #ffffff 0%, #fafcff 100%);
+            --body-bg: #f0f5fe;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--body-bg);
+            color: #0b1f3b;
+            background-image: radial-gradient(circle at 10% 20%, rgba(65, 105, 225, 0.03) 0%, transparent 30%),
+                              radial-gradient(circle at 90% 70%, rgba(65, 105, 225, 0.03) 0%, transparent 30%);
+        }
+        .bg-royal { background-color: var(--royal) !important; }
+        .text-royal { color: var(--royal) !important; }
+        .border-royal { border-color: var(--royal) !important; }
+
+        /* glass navbar refined */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(14px);
+            border-bottom: 2px solid rgba(65, 105, 225, 0.2);
+            box-shadow: 0 4px 20px -8px rgba(65,105,225,0.2);
+        }
+
+        /* decorative cards with gradient, centered content */
+        .card-royal {
+            background: var(--card-gradient);
+            border-radius: 32px;
+            border: 2px solid rgba(65, 105, 225, 0.2);
+            box-shadow: 0 20px 35px -12px rgba(65, 105, 225, 0.25), inset 0 1px 3px rgba(255,255,255,0.9);
+            transition: all 0.3s ease;
+            text-align: center;        /* center text inside */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .card-royal:hover {
+            border-color: var(--royal);
+            box-shadow: 0 28px 40px -16px var(--royal), inset 0 1px 4px white;
+            transform: translateY(-6px);
+        }
+
+        /* user card – fully centered, decorative */
+        .user-card {
+            background: var(--card-gradient);
+            border-radius: 36px;
+            border: 2px solid rgba(65, 105, 225, 0.2);
+            padding: 2rem 1.5rem;
+            transition: all 0.25s;
+            box-shadow: 0 20px 30px -18px rgba(65,105,225,0.4);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+        .user-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 40%, rgba(65,105,225,0.04), transparent 60%);
+            pointer-events: none;
+        }
+        .user-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle at top right, rgba(65,105,225,0.08), transparent 70%);
+            border-radius: 0 0 0 60px;
+            pointer-events: none;
+        }
+        .user-card:hover {
+            border-color: var(--royal);
+            box-shadow: 0 28px 36px -20px var(--royal);
+            transform: translateY(-4px) scale(1.01);
+        }
+
+        /* avatar circle with subtle glow */
+        .user-avatar {
+            width: 56px;
+            height: 56px;
+            background: var(--royal);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            box-shadow: 0 10px 18px -6px var(--royal);
+            border: 2px solid rgba(255,255,255,0.5);
+            margin-bottom: 0.75rem;
+            transition: transform 0.2s;
+        }
+        .user-card:hover .user-avatar {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        /* phone number bigger, centered */
+        .user-phone {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #0b1f3b;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.5rem;
+            word-break: break-word;
+        }
+
+        /* status pill centered */
+        .status-pill {
+            display: inline-block;
+            margin: 0.5rem auto 1rem auto;
+            padding: 8px 22px;
+            border-radius: 60px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border: 1px solid transparent;
+            box-shadow: 0 4px 10px -4px rgba(0,0,0,0.05);
+        }
+
+        /* action row centered */
+        .action-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-top: 1.2rem;
+            width: 100%;
+        }
+
+        /* buttons with nicer style */
+        .btn-royal {
+            background-color: var(--royal);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 800;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            box-shadow: 0 12px 20px -10px var(--royal);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-royal:hover {
+            background-color: var(--royal-dark);
+            transform: scale(1.05);
+            box-shadow: 0 16px 24px -8px var(--royal);
+        }
+
+        .btn-outline-royal {
+            background: white;
+            border: 2px solid var(--royal);
+            color: var(--royal);
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 800;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+        .btn-outline-royal:hover {
+            background: var(--royal);
+            color: white;
+            transform: scale(1.02);
+        }
+
+        /* select dropdown styled */
+        select {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            padding: 0.7rem 1.8rem 0.7rem 1.5rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #1e293b;
+            outline: none;
+            transition: all 0.2s;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%234169E1" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        select:focus {
+            border-color: var(--royal);
+            box-shadow: 0 0 0 4px var(--royal-glow);
+        }
+
+        /* nav links refined */
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .nav-link {
+            padding: 0.6rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 700;
+            color: #2d3a5e;
+            transition: 0.2s;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            background: transparent;
+        }
+        .nav-link:hover {
+            background-color: var(--royal-soft);
+            color: var(--royal);
+        }
+        .nav-link.active {
+            background: var(--royal);
+            color: white;
+            box-shadow: 0 8px 16px -8px var(--royal);
+        }
+        @media (max-width: 640px) {
+            .nav-link {
+                padding: 0.4rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* search bar with icon */
+        .search-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+        }
+        #user-search {
+            width: 100%;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            padding: 1rem 1.5rem 1rem 3rem;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            box-shadow: 0 8px 16px -12px rgba(65,105,225,0.2);
+        }
+        #user-search:focus {
+            border-color: var(--royal);
+            box-shadow: 0 0 0 5px var(--royal-glow);
+        }
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 1.1rem;
+            color: #94a3b8;
+            transition: color 0.2s;
+        }
+        #user-search:focus + .search-icon {
+            color: var(--royal);
+        }
+
+        /* home goals cards centered */
+        .goal-card {
+            text-align: center;
+            align-items: center;
+        }
+
+        /* delete button subtle */
+        .delete-btn {
+            background: white;
+            border: 2px solid #fee2e2;
+            color: #f87171;
+            border-radius: 40px;
+            padding: 0.7rem 1.2rem;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .delete-btn:hover {
+            background: #fee2e2;
+            color: #b91c1c;
+            border-color: #fecaca;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navbar (refined) -->
+    <nav class="glass-nav sticky top-0 z-50 px-4 sm:px-8 py-3 flex items-center justify-between flex-wrap gap-3">
+        <div class="flex items-center flex-wrap gap-3 sm:gap-6">
+            <div class="flex items-center space-x-2 group cursor-pointer shrink-0">
+                <div class="bg-royal p-2 rounded-xl shadow-xl group-hover:rotate-12 transition-transform">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                </div>
+                <span class="text-lg sm:text-xl font-black tracking-tight text-slate-900">AutoSender<span class="text-royal">PRO</span></span>
+            </div>
+            <div class="nav-links">
+                <button id="tab-home" onclick="switchTab('home')" class="nav-link active">Home</button>
+                <button id="tab-analytics" onclick="switchTab('analytics')" class="nav-link">Analytics</button>
+                <button id="tab-management" onclick="switchTab('management')" class="nav-link">Management</button>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 sm:gap-4 shrink-0">
+            <div id="connection-indicator" class="flex items-center space-x-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl bg-emerald-50 border border-emerald-100">
+                <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                <span class="text-emerald-700 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider hidden xs:inline">Live</span>
+                <span class="text-emerald-700 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider xs:hidden">●</span>
+            </div>
+            <button class="bg-royal text-white px-4 sm:px-6 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-xl hover:bg-royal-dark transition active:scale-95">Log Out</button>
+        </div>
+    </nav>
+
+    <main class="max-w-[1400px] mx-auto p-4 sm:p-6 lg:p-10">
+
+        <!-- HOME SECTION (cards centered) -->
+        <section id="section-home" class="space-y-16 py-4 sm:py-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6 sm:space-y-8 text-center lg:text-left">
+                    <span class="inline-block px-4 py-2 rounded-full bg-royal-soft text-royal text-xs font-bold uppercase tracking-widest border border-royal/30">Administrator Portal v2.0</span>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.1]">Precision <span class="text-royal">Automation</span> for Mobile Systems.</h1>
+                    <p class="text-lg sm:text-xl text-slate-500 leading-relaxed max-w-lg mx-auto lg:mx-0">Monitor, manage, and scale your AutoSender network from a centralized high-performance dashboard. Built for high-reliability enterprise operations.</p>
+                    <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
+                        <button onclick="switchTab('analytics')" class="btn-royal text-white px-8 py-4 rounded-2xl font-bold text-base sm:text-lg">View Analytics</button>
+                        <button onclick="switchTab('management')" class="bg-white text-slate-900 border-2 border-slate-200 px-8 py-4 rounded-2xl font-bold text-base sm:text-lg hover:border-royal/50 transition">User Database</button>
+                    </div>
+                </div>
+                <div class="relative flex justify-center lg:justify-end">
+                    <div class="w-80 h-80 bg-royal/10 rounded-full absolute -top-10 -right-10 blur-3xl"></div>
+                    <div class="w-80 h-80 bg-emerald-600/10 rounded-full absolute -bottom-10 -left-10 blur-3xl"></div>
+                    <div class="relative z-10 grid grid-cols-2 gap-6">
+                        <div class="bg-white p-6 sm:p-8 rounded-[32px] shadow-2xl border-2 border-royal/30 text-center">
+                            <p class="text-3xl sm:text-4xl font-black text-royal mb-2">99.9%</p>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Uptime</p>
+                        </div>
+                        <div class="bg-slate-900 p-6 sm:p-8 rounded-[32px] shadow-2xl mt-12 border-2 border-royal/50 text-center">
+                            <p class="text-3xl sm:text-4xl font-black text-white mb-2">Zero</p>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Latency</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goals Grid (centered cards) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 pt-6">
+                <div class="card-royal p-8 goal-card">
+                    <div class="w-14 h-14 bg-royal-soft text-royal rounded-2xl flex items-center justify-center mb-5 border border-royal/20 mx-auto">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-extrabold mb-3">Ultra-Fast Sync</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Direct integration with mobile nodes ensuring that subscription updates and status changes propagate in under 500ms.</p>
+                </div>
+                <div class="card-royal p-8 goal-card">
+                    <div class="w-14 h-14 bg-royal-soft text-royal rounded-2xl flex items-center justify-center mb-5 border border-royal/20 mx-auto">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-extrabold mb-3">Robust Security</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Enterprise-grade encryption for all USSD and SMS data packets, protecting user privacy and business communication integrity.</p>
+                </div>
+                <div class="card-royal p-8 goal-card">
+                    <div class="w-14 h-14 bg-royal-soft text-royal rounded-2xl flex items-center justify-center mb-5 border border-royal/20 mx-auto">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-extrabold mb-3">Deep Intelligence</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Advanced behavioral analytics to detect fraudulent usage and optimize system resources across geographic clusters.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ANALYTICS SECTION (cards centered) -->
+        <section id="section-analytics" class="hidden space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">System Metrics</h2>
+                    <p class="text-slate-500 text-sm font-medium mt-1">Real-time health and performance data across the network.</p>
+                </div>
+                <button onclick="fetchAnalytics()" class="flex items-center space-x-2 bg-white border-2 border-slate-200 px-5 py-2.5 rounded-2xl text-sm font-bold text-slate-600 hover:border-royal/40 transition active:scale-95 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    <span>Refresh Dashboard</span>
+                </button>
+            </div>
+
+            <!-- Stats Cards (centered) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card-royal p-8 text-center">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Total Ecosystem</p>
+                    <p id="stat-total" class="text-4xl font-black text-slate-900">0</p>
+                    <div class="mt-4 flex items-center justify-center text-xs font-bold text-royal">
+                        <span>Registered Users</span>
+                    </div>
+                </div>
+                <div class="card-royal p-8 text-center">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Active Nodes</p>
+                    <p id="stat-active" class="text-4xl font-black text-emerald-600">0</p>
+                    <div class="mt-4 flex items-center justify-center text-xs font-bold text-emerald-600">
+                        <span>Paid Licenses</span>
+                    </div>
+                </div>
+                <div class="card-royal p-8 text-center">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">On Hold</p>
+                    <p id="stat-suspended" class="text-4xl font-black text-amber-500">0</p>
+                    <div class="mt-4 flex items-center justify-center text-xs font-bold text-amber-600">
+                        <span>Suspended Accounts</span>
+                    </div>
+                </div>
+                <div class="card-royal p-8 text-center">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Dormant</p>
+                    <p id="stat-inactive" class="text-4xl font-black text-slate-400">0</p>
+                    <div class="mt-4 flex items-center justify-center text-xs font-bold text-slate-400">
+                        <span>Expired Access</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-royal p-8 lg:p-10 text-center">
+                <h3 class="text-lg font-extrabold mb-8 flex items-center justify-center">
+                    <span class="w-2 h-2 bg-royal rounded-full mr-3"></span> Ecosystem Health
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="text-left">
+                        <p class="text-sm font-bold text-slate-500 mb-6 uppercase tracking-wider">Node Utilization</p>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between text-xs font-bold mb-2">
+                                    <span class="text-slate-700">Active vs Total Capacity</span>
+                                    <span id="active-percent" class="text-royal">0%</span>
+                                </div>
+                                <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden border border-royal/20">
+                                    <div id="active-bar" class="bg-royal h-full rounded-full transition-all duration-1000" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="pt-4">
+                                <p class="text-xs text-slate-400 italic leading-relaxed">System performance based on active paid licenses vs total registered users.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <div class="text-center p-8 bg-royal-soft rounded-3xl w-full border-2 border-royal/30">
+                            <p class="text-sm font-bold text-royal uppercase tracking-widest mb-2">Network Status</p>
+                            <p class="text-2xl font-black text-emerald-600">OPTIMAL</p>
+                            <p class="text-xs text-slate-500 mt-2">All backend services responding nominally.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MANAGEMENT SECTION – DECORATIVE CARDS, CENTERED CONTENT -->
+        <section id="section-management" class="hidden space-y-8">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-center sm:text-left">
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Access Control</h2>
+                    <p class="text-slate-500 text-sm font-medium mt-1">Manage secure mobile nodes and subscription levels.</p>
+                </div>
+                <div class="search-wrapper">
+                    <input type="text" id="user-search" onkeyup="filterUsers()" placeholder="Search node by phone...">
+                    <svg class="search-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                </div>
+            </div>
+
+            <!-- user cards grid (decorative, centered) -->
+            <div id="user-cards" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+                <!-- cards injected -->
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const API_URL = 'https://tests2.up.railway.app';
+        let allUsers = [];
+
+        async function fetchAllUsers() {
+            try {
+                const res = await fetch(`${API_URL}/users`);
+                if (res.ok) {
+                    const userList = await res.json();
+                    allUsers = userList.map(u => ({ phone: u.phone }));
+                } else {
+                    await fetchAnalyticsForFallback();
+                }
+            } catch (e) {
+                await fetchAnalyticsForFallback();
+            }
+            renderUserCards();
+        }
+
+        async function fetchAnalyticsForFallback() {
+            try {
+                const res = await fetch(`${API_URL}/status/analytics`);
+                const data = await res.json();
+                allUsers = data.latestUsers || [];
+            } catch (e) {
+                allUsers = [];
+            }
+        }
+
+        async function fetchAnalytics() {
+            try {
+                const res = await fetch(`${API_URL}/status/analytics`);
+                const data = await res.json();
+
+                document.getElementById('stat-total').innerText = data.totalUsers || 0;
+                document.getElementById('stat-active').innerText = data.activeUsers || 0;
+                document.getElementById('stat-suspended').innerText = data.suspendedUsers || 0;
+                document.getElementById('stat-inactive').innerText = data.inactiveUsers || 0;
+
+                if (data.totalUsers > 0) {
+                    const percent = Math.round((data.activeUsers / data.totalUsers) * 100);
+                    const bar = document.getElementById('active-bar');
+                    const text = document.getElementById('active-percent');
+                    if(bar) bar.style.width = percent + '%';
+                    if(text) text.innerText = percent + '%';
+                }
+
+                if (allUsers.length === 0 && data.latestUsers) {
+                    allUsers = data.latestUsers;
+                    renderUserCards();
+                }
+
+                updateIndicator(true);
+            } catch (e) {
+                console.error(e);
+                updateIndicator(false);
+            }
+        }
+
+        function renderUserCards() {
+            const container = document.getElementById('user-cards');
+            if (!container) return;
+            if (allUsers.length === 0) {
+                container.innerHTML = '<div class="col-span-full text-center py-20 italic text-slate-400 bg-white/70 rounded-3xl border-2 border-dashed border-royal/40">🔐 No users found – check database connection</div>';
+                return;
+            }
+
+            container.innerHTML = allUsers.map(user => `
+                <div class="user-card" data-search="${user.phone}">
+                    <div class="user-avatar">${(user.phone || 'U').substring(0,2)}</div>
+                    <div class="user-phone">${user.phone}</div>
+                    <div id="status-badge-${user.phone}" class="status-pill bg-slate-100 text-slate-400 border border-slate-200">
+                        Syncing...
+                    </div>
+
+                    <div class="action-row">
+                        <select id="plan-${user.phone}">
+                            <option value="30">Monthly</option>
+                            <option value="90">Quarterly</option>
+                            <option value="365">Annual</option>
+                        </select>
+                        <button onclick="activateUser('${user.phone}')" class="btn-royal">Update</button>
+                        <button id="suspend-btn-${user.phone}" onclick="toggleSuspend('${user.phone}')" class="bg-amber-500/10 text-amber-600 border-2 border-amber-200 px-4 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-wider hover:bg-amber-500 hover:text-white transition active:scale-95">Suspend</button>
+                        <button onclick="deleteUser('${user.phone}')" class="delete-btn" title="delete node">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            allUsers.forEach(u => fetchDetailedStatus(u.phone));
+        }
+
+        async function fetchDetailedStatus(phone) {
+            try {
+                const res = await fetch(`${API_URL}/status/${phone}`);
+                const status = await res.json();
+                const badge = document.getElementById(`status-badge-${phone}`);
+                const sBtn = document.getElementById(`suspend-btn-${phone}`);
+
+                if (status.isSuspended) {
+                    if (badge) {
+                        badge.innerHTML = 'Suspended';
+                        badge.className = "status-pill bg-amber-100 text-amber-700 border-amber-300";
+                    }
+                    if (sBtn) {
+                        sBtn.innerText = "Authorize";
+                        sBtn.className = "bg-emerald-500/10 text-emerald-600 border-2 border-emerald-200 px-4 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-wider hover:bg-emerald-500 hover:text-white transition active:scale-95";
+                    }
+                } else if (status.isActive) {
+                    if (badge) {
+                        badge.innerHTML = `ONLINE: ${status.daysRemaining}D`;
+                        badge.className = "status-pill bg-emerald-100 text-emerald-700 border-emerald-300";
+                    }
+                    if (sBtn) {
+                        sBtn.innerText = "Suspend";
+                        sBtn.className = "bg-amber-500/10 text-amber-600 border-2 border-amber-200 px-4 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-wider hover:bg-amber-500 hover:text-white transition active:scale-95";
+                    }
+                } else {
+                    if (badge) {
+                        badge.innerHTML = 'Expired';
+                        badge.className = "status-pill bg-rose-100 text-rose-700 border-rose-300";
+                    }
+                    if (sBtn) {
+                        sBtn.innerText = "Suspend";
+                        sBtn.className = "bg-amber-500/10 text-amber-600 border-2 border-amber-200 px-4 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-wider hover:bg-amber-500 hover:text-white transition active:scale-95";
+                    }
+                }
+            } catch (e) {}
+        }
+
+        async function activateUser(phone) {
+            const days = document.getElementById(`plan-${phone}`).value;
+            if (!confirm(`CONFIRM: Extend licensing for Node ${phone} by ${days} days?`)) return;
+            try {
+                const res = await fetch(`${API_URL}/status/${phone}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ isPaid: true, isSuspended: false, daysToAdd: parseInt(days) })
+                });
+                if (res.ok) {
+                    fetchAnalytics();
+                    fetchAllUsers();
+                }
+            } catch (e) { alert('Node Update Failure'); }
+        }
+
+        async function toggleSuspend(phone) {
+            const btn = document.getElementById(`suspend-btn-${phone}`);
+            if (!btn) return;
+            const isSuspended = btn.innerText.toUpperCase() === "AUTHORIZE";
+            try {
+                await fetch(`${API_URL}/status/${phone}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ isSuspended: !isSuspended })
+                });
+                fetchAnalytics();
+                fetchAllUsers();
+            } catch (e) { alert('Command Execution Error'); }
+        }
+
+        async function deleteUser(phone) {
+            if (!confirm(`CRITICAL: Permanently decommission node ${phone}?`)) return;
+            try {
+                const res = await fetch(`${API_URL}/users/${phone}`, { method: 'DELETE' });
+                if (res.ok) {
+                    fetchAnalytics();
+                    fetchAllUsers();
+                }
+            } catch (e) {}
+        }
+
+        function filterUsers() {
+            const query = document.getElementById('user-search').value.toLowerCase();
+            document.querySelectorAll('.user-card').forEach(card => {
+                card.classList.toggle('hidden', !card.dataset.search.toLowerCase().includes(query));
+            });
+        }
+
+        function switchTab(tab) {
+            const sections = ['home', 'analytics', 'management'];
+            sections.forEach(s => {
+                const section = document.getElementById(`section-${s}`);
+                const btn = document.getElementById(`tab-${s}`);
+                if(section) section.classList.toggle('hidden', s !== tab);
+                if(btn) btn.classList.toggle('active', s === tab);
+            });
+            if (tab === 'management') fetchAllUsers();
+            if (tab === 'analytics') fetchAnalytics();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateIndicator(online) {
+            const ind = document.getElementById('connection-indicator');
+            if (!ind) return;
+            ind.innerHTML = online ?
+                '<div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div><span class="text-emerald-700 text-[11px] font-bold uppercase tracking-wider">Live System</span>' :
+                '<div class="w-2 h-2 bg-rose-500 rounded-full"></div><span class="text-rose-700 text-[11px] font-bold uppercase tracking-wider">Gateway Offline</span>';
+            ind.className = online ?
+                "flex items-center space-x-2 px-4 py-2 rounded-2xl bg-emerald-50 border-2 border-emerald-100" :
+                "flex items-center space-x-2 px-4 py-2 rounded-2xl bg-rose-50 border-2 border-rose-100";
+        }
+
+        fetchAnalytics();
+        fetchAllUsers();
+        setInterval(fetchAnalytics, 30000);
+    </script>
+</body>
+</html>
