@@ -3,101 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>AutoSender Pro · Admin Control</title>
+    <title>AutoSender Pro · Secure Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --royal: #1E3A8A;
-            --royal-light: #3B5FBF;
-            --bg-light: #F8FAFE;
-        }
+        :root { --royal: #1E3A8A; --bg-light: #F8FAFE; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-light); }
-        .nav-link { padding: 0.5rem 1.4rem; border-radius: 40px; font-weight: 600; color: #43567A; transition: 0.15s; }
-        .nav-link.active { background: var(--royal); color: white; box-shadow: 0 6px 14px -6px var(--royal); }
-        .table-container { background: white; border-radius: 28px; border: 1px solid #E9EDF4; overflow: hidden; box-shadow: 0 12px 30px -12px rgba(30,58,138,0.06); }
-        .status-pill { display: inline-block; padding: 0.4rem 1.2rem; border-radius: 60px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .nav-link { padding: 0.5rem 1.4rem; border-radius: 40px; font-weight: 700; color: #43567A; transition: 0.2s; }
+        .nav-link.active { background: var(--royal); color: white; box-shadow: 0 8px 16px -8px var(--royal); }
+        .user-card { background: white; border-radius: 36px; border: 2px solid rgba(30, 58, 138, 0.1); padding: 2rem 1.5rem; text-align: center; transition: all 0.25s; }
+        .user-card:hover { transform: translateY(-4px); border-color: var(--royal); box-shadow: 0 20px 30px -15px rgba(30, 58, 138, 0.2); }
+        .status-pill { display: inline-block; padding: 8px 20px; border-radius: 60px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- LOGIN OVERLAY -->
     <div id="login-overlay" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-6">
-        <div class="bg-white w-full max-w-md rounded-[32px] p-10 shadow-2xl">
-            <div class="text-center mb-8">
-                <div class="bg-blue-600 w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        <div class="bg-white w-full max-w-md rounded-[40px] p-12 shadow-2xl">
+            <div class="text-center mb-10">
+                <div class="bg-blue-600 w-20 h-20 rounded-3xl mx-auto mb-6 flex items-center justify-center shadow-xl">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                 </div>
-                <h1 class="text-2xl font-black text-slate-900">Admin Secure Access</h1>
-                <p class="text-slate-500 font-medium text-sm mt-2">Enter credentials to manage nodes</p>
+                <h1 class="text-3xl font-black text-slate-900">Admin Portal</h1>
+                <p class="text-slate-400 font-bold text-xs uppercase tracking-widest mt-3">Secure Mobile Ecosystem</p>
             </div>
-            <div class="space-y-4">
-                <input type="text" id="admin-user" placeholder="Username" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 focus:ring-4 focus:ring-blue-100 outline-none transition-all font-semibold">
-                <input type="password" id="admin-pass" placeholder="Password" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 focus:ring-4 focus:ring-blue-100 outline-none transition-all font-semibold">
-                <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-200 transition-all active:scale-95">Verify & Enter</button>
+            <div class="space-y-5">
+                <input type="text" id="admin-user" placeholder="Username" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-blue-600 outline-none transition-all font-bold text-slate-700">
+                <input type="password" id="admin-pass" placeholder="Password" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-6 py-4 focus:border-blue-600 outline-none transition-all font-bold text-slate-700">
+                <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-5 rounded-2xl shadow-xl shadow-blue-100 transition-all active:scale-95 text-sm uppercase tracking-widest">Verify Identity</button>
             </div>
-            <p id="login-error" class="text-red-500 text-center text-xs font-bold mt-6 hidden">Invalid Credentials</p>
+            <p id="login-error" class="text-red-500 text-center text-xs font-black mt-8 hidden">ACCESS DENIED: INVALID CREDENTIALS</p>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD (HIDDEN UNTIL LOGIN) -->
+    <!-- MAIN DASHBOARD -->
     <div id="dashboard-content" class="hidden">
-        <nav class="bg-white sticky top-0 z-50 px-8 py-4 flex items-center justify-between border-b border-slate-100 shadow-sm">
+        <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 px-8 py-4 flex items-center justify-between border-b border-slate-100 shadow-sm">
+            <span class="text-xl font-black tracking-tighter">AutoSender<span class="text-blue-600">PRO</span></span>
             <div class="flex items-center space-x-2">
-                <span class="text-xl font-black tracking-tight">AutoSender<span class="text-blue-600">PRO</span></span>
-            </div>
-            <div class="flex items-center space-x-4">
-                <button id="tab-home" onclick="switchTab('home')" class="nav-link active">Management</button>
-                <button id="tab-analytics" onclick="switchTab('analytics')" class="nav-link">Analytics</button>
-                <button onclick="handleLogout()" class="text-slate-400 hover:text-red-500 font-bold text-sm transition">Log Out</button>
+                <button id="tab-home" onclick="switchTab('home')" class="nav-link active">Home</button>
+                <button id="tab-management" onclick="switchTab('management')" class="nav-link">Management</button>
+                <button onclick="handleLogout()" class="ml-4 text-slate-300 hover:text-red-500 transition font-black text-[10px] uppercase">Sign Out</button>
             </div>
         </nav>
 
         <main class="max-w-7xl mx-auto p-10">
-            <!-- MANAGEMENT -->
             <section id="section-home">
-                <div class="flex items-center justify-between mb-10">
-                    <div>
-                        <h2 class="text-3xl font-black text-slate-900">Node Management</h2>
-                        <p class="text-slate-500 font-medium">Configure and authorize active mobile nodes.</p>
+                <div class="flex items-center justify-between mb-12">
+                    <h2 class="text-4xl font-black text-slate-900 tracking-tighter">System Health</h2>
+                    <div id="conn-status" class="px-4 py-2 rounded-full bg-emerald-50 border border-emerald-100 flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                        <span class="text-[10px] font-black text-emerald-700 uppercase">Live</span>
                     </div>
-                    <button onclick="fetchAllUsers()" class="bg-white border border-slate-200 p-3 rounded-2xl hover:bg-slate-50 transition shadow-sm">
-                        <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                    </button>
                 </div>
-
-                <div class="table-container">
-                    <table class="w-full">
-                        <thead>
-                            <tr class="bg-slate-50 text-left">
-                                <th class="p-6 text-xs font-black uppercase text-slate-400">Phone Node</th>
-                                <th class="p-6 text-xs font-black uppercase text-slate-400">Status</th>
-                                <th class="p-6 text-xs font-black uppercase text-slate-400">Subscription</th>
-                                <th class="p-6 text-xs font-black uppercase text-slate-400">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="user-table-body"></tbody>
-                    </table>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="stats-grid">
+                    <div class="bg-white p-10 rounded-[40px] border border-slate-100 shadow-sm text-center">
+                        <p class="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-2">Total Nodes</p>
+                        <p id="stat-total" class="text-5xl font-black text-slate-900">0</p>
+                    </div>
+                    <div class="bg-white p-10 rounded-[40px] border border-slate-100 shadow-sm text-center">
+                        <p class="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-2">Active</p>
+                        <p id="stat-active" class="text-5xl font-black text-emerald-500">0</p>
+                    </div>
+                    <div class="bg-white p-10 rounded-[40px] border border-slate-100 shadow-sm text-center">
+                        <p class="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-2">Suspended</p>
+                        <p id="stat-suspended" class="text-5xl font-black text-amber-500">0</p>
+                    </div>
                 </div>
             </section>
 
-            <!-- ANALYTICS -->
-            <section id="section-analytics" class="hidden">
-                <h2 class="text-3xl font-black text-slate-900 mb-8">System Analytics</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm">
-                        <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Total Users</p>
-                        <p id="stat-total" class="text-4xl font-black text-slate-900">0</p>
-                    </div>
-                    <div class="bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm">
-                        <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Active</p>
-                        <p id="stat-active" class="text-4xl font-black text-emerald-500">0</p>
-                    </div>
-                    <div class="bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm">
-                        <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Suspended</p>
-                        <p id="stat-suspended" class="text-4xl font-black text-amber-500">0</p>
-                    </div>
+            <section id="section-management" class="hidden">
+                <div class="flex items-center justify-between mb-10">
+                    <h2 class="text-4xl font-black text-slate-900 tracking-tighter">Node Control</h2>
+                    <input type="text" id="search" onkeyup="filter()" placeholder="Quick Search..." class="bg-white border border-slate-200 rounded-2xl px-6 py-3 text-sm font-bold outline-none focus:border-blue-600">
                 </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" id="user-cards"></div>
             </section>
         </main>
     </div>
@@ -111,80 +92,60 @@
         async function handleLogin() {
             const username = document.getElementById('admin-user').value;
             const password = document.getElementById('admin-pass').value;
-            const errorEl = document.getElementById('login-error');
-
             try {
                 const res = await fetch(`${API_URL}/admin/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
                 });
-
                 if (res.ok) {
                     const data = await res.json();
                     adminToken = data.token;
                     sessionStorage.setItem('admin_token', adminToken);
                     showDashboard();
                 } else {
-                    errorEl.classList.remove('hidden');
+                    document.getElementById('login-error').classList.remove('hidden');
                 }
-            } catch (e) {
-                alert('Connection to server failed');
-            }
+            } catch (e) { alert('Server Unavailable'); }
         }
 
         function showDashboard() {
             document.getElementById('login-overlay').classList.add('hidden');
             document.getElementById('dashboard-content').classList.remove('hidden');
-            fetchAnalytics();
-            fetchAllUsers();
+            refresh();
         }
 
-        function handleLogout() {
-            sessionStorage.clear();
-            location.reload();
-        }
+        function handleLogout() { sessionStorage.clear(); location.reload(); }
 
-        async function fetchAllUsers() {
+        async function refresh() {
             try {
-                const res = await fetch(`${API_URL}/users`, {
-                    headers: { 'x-admin-key': adminToken }
-                });
-                const users = await res.json();
-                renderTable(users);
-            } catch (e) { console.error(e); }
-        }
-
-        async function fetchAnalytics() {
-            try {
-                const res = await fetch(`${API_URL}/status/analytics`, {
-                    headers: { 'x-admin-key': adminToken }
-                });
+                const res = await fetch(`${API_URL}/status/analytics`, { headers: { 'x-admin-key': adminToken }});
                 const data = await res.json();
                 document.getElementById('stat-total').innerText = data.totalUsers || 0;
                 document.getElementById('stat-active').innerText = data.activeUsers || 0;
                 document.getElementById('stat-suspended').innerText = data.suspendedUsers || 0;
-            } catch (e) {}
+
+                const uRes = await fetch(`${API_URL}/users`, { headers: { 'x-admin-key': adminToken }});
+                const users = await uRes.json();
+                renderCards(users);
+            } catch (e) { console.error(e); }
         }
 
-        function renderTable(users) {
-            const tbody = document.getElementById('user-table-body');
-            tbody.innerHTML = users.map(u => `
-                <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition">
-                    <td class="p-6 font-bold text-slate-700">${u.phone}</td>
-                    <td class="p-6"><span id="badge-${u.phone}" class="status-pill bg-slate-100 text-slate-500">Syncing...</span></td>
-                    <td class="p-6">
-                        <select id="plan-${u.phone}" class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none">
-                            <option value="30">30 Days</option>
-                            <option value="90">90 Days</option>
-                            <option value="365">1 Year</option>
+        function renderCards(users) {
+            const container = document.getElementById('user-cards');
+            container.innerHTML = users.map(u => `
+                <div class="user-card" data-phone="${u.phone}">
+                    <div class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center text-white font-black text-xl shadow-lg">${u.phone.substring(0,2)}</div>
+                    <p class="font-black text-slate-800 text-lg mb-2">${u.phone}</p>
+                    <div id="badge-${u.phone}" class="status-pill bg-slate-50 text-slate-400">Syncing...</div>
+                    <div class="mt-8 flex flex-col space-y-3">
+                        <select id="plan-${u.phone}" class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-xs font-black">
+                            <option value="30">Monthly</option><option value="365">Annual</option>
                         </select>
-                    </td>
-                    <td class="p-6 flex space-x-2">
-                        <button onclick="updateUser('${u.phone}')" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md">Update</button>
-                        <button onclick="deleteUser('${u.phone}')" class="bg-white border border-red-100 text-red-500 px-4 py-2 rounded-xl text-xs font-bold hover:bg-red-50">Delete</button>
-                    </td>
-                </tr>
+                        <button onclick="updateUser('${u.phone}')" class="w-full bg-slate-900 text-white py-3 rounded-xl text-[10px] font-black uppercase tracking-widest">Update Node</button>
+                        <button onclick="deleteUser('${u.phone}')" class="w-full text-red-500 py-2 text-[10px] font-black uppercase">Decommission</button>
+                    </div>
+                </div>
             `).join('');
             users.forEach(u => fetchStatus(u.phone));
         }
@@ -193,43 +154,40 @@
             const res = await fetch(`${API_URL}/status/${phone}`);
             const data = await res.json();
             const badge = document.getElementById(`badge-${phone}`);
-            if (data.isSuspended) {
-                badge.className = "status-pill bg-amber-100 text-amber-700";
-                badge.innerText = "Suspended";
-            } else if (data.isActive) {
-                badge.className = "status-pill bg-emerald-100 text-emerald-700";
-                badge.innerText = `Active (${data.daysRemaining}d)`;
-            } else {
-                badge.className = "status-pill bg-red-100 text-red-700";
-                badge.innerText = "Expired";
-            }
+            if (data.isSuspended) { badge.className = "status-pill bg-amber-50 text-amber-600 border border-amber-100"; badge.innerText = "Suspended"; }
+            else if (data.isActive) { badge.className = "status-pill bg-emerald-50 text-emerald-600 border border-emerald-100"; badge.innerText = `Active (${data.daysRemaining}d)`; }
+            else { badge.className = "status-pill bg-rose-50 text-red-600 border border-rose-100"; badge.innerText = "Expired"; }
         }
 
         async function updateUser(phone) {
             const days = document.getElementById(`plan-${phone}`).value;
-            const res = await fetch(`${API_URL}/status/${phone}`, {
+            await fetch(`${API_URL}/status/${phone}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'x-admin-key': adminToken },
                 body: JSON.stringify({ isPaid: true, isSuspended: false, daysToAdd: parseInt(days) })
             });
-            if (res.ok) fetchAllUsers();
+            refresh();
         }
 
         async function deleteUser(phone) {
-            if (!confirm('Permanently delete this node?')) return;
-            const res = await fetch(`${API_URL}/users/${phone}`, {
-                method: 'DELETE',
-                headers: { 'x-admin-key': adminToken }
-            });
-            if (res.ok) fetchAllUsers();
+            if (!confirm('Permanent Action?')) return;
+            await fetch(`${API_URL}/users/${phone}`, { method: 'DELETE', headers: { 'x-admin-key': adminToken }});
+            refresh();
         }
 
         function switchTab(tab) {
             document.getElementById('section-home').classList.toggle('hidden', tab !== 'home');
-            document.getElementById('section-analytics').classList.toggle('hidden', tab !== 'analytics');
+            document.getElementById('section-management').classList.toggle('hidden', tab !== 'management');
             document.getElementById('tab-home').classList.toggle('active', tab === 'home');
-            document.getElementById('tab-analytics').classList.toggle('active', tab === 'analytics');
+            document.getElementById('tab-management').classList.toggle('active', tab === 'management');
         }
+
+        function filter() {
+            const q = document.getElementById('search').value.toLowerCase();
+            document.querySelectorAll('.user-card').forEach(c => c.classList.toggle('hidden', !c.dataset.phone.includes(q)));
+        }
+
+        setInterval(refresh, 60000);
     </script>
 </body>
 </html>
